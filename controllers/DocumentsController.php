@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\base\Files;
 use app\models\Comments;
 use app\models\DocumentForm;
+use app\models\News;
 use app\models\Settings;
 use app\models\UploadFileForm;
 use Yii;
@@ -96,7 +97,14 @@ class DocumentsController extends Controller
                         $file->filename = $filename;
                         $file->tag = "Начальная версия";
                         $file->save();
+
                     }
+                    $new = new News();
+                    $new->type = News::NEW_DOC;
+                    $new->message = "Создан новый документ : ".$document->title;
+                    $new->link = Url::toRoute(['documents/view', 'id'=>$document->id]);
+                    $new->author_id = Yii::$app->user->id;
+                    $new->save();
                     return $this->redirect(['view', 'id' => $document->id]);
                 }
             }
@@ -178,8 +186,16 @@ class DocumentsController extends Controller
                 $file->tag = $model->tag;
                 $file->filename = $model->docFile;
                 $file->document_id = $model->document_id;
-                if ($file->save())
-                    return $this->redirect(Url::toRoute(['view','id'=>$model->document_id]));
+                $file->author_id = Yii::$app->user->id;
+                if ($file->save()) {
+                    $new = new News();
+                    $new->type = News::NEW_VERSION;
+                    $new->message = "Добавлена новая версия для документа : ".Documents::findOne($model->document_id)->title;
+                    $new->link = Url::toRoute(['documents/view', 'id'=> $model->document_id]);
+                    $new->author_id = Yii::$app->user->id;
+                    $new->save();
+                    return $this->redirect(Url::toRoute(['view', 'id' => $model->document_id]));
+                }
             }
         }
 
@@ -194,10 +210,20 @@ class DocumentsController extends Controller
             $comment->document_id = Yii::$app->request->post('document_id');
             $comment->message = Yii::$app->request->post('message');
             $comment->author_id=Yii::$app->user->id;
-            if($comment->save())
-                Yii::$app->session->addFlash('success', 'Сообщение добавлено');
+            if($comment->save()) {
+                $new = new News();
+                $new->type = News::NEW_COMMENT;
+                $new->message = "Добавлена комментарий для документа : ".Documents::findOne($comment-->document_id)->title;
+                $new->link = Url::toRoute(['documents/view', 'id'=> $comment->document_id]);
+                $new->author_id = Yii::$app->user->id;
+                $new->save();
+
+                Yii::$app->session->setFlash('success', 'Сообщение добавлено');
+
+            }
             else
-                Yii::$app->session->addFlash('error', 'При добавлении сообщения произошла ошибка');
+                Yii::$app->session->setFlash('error', 'При добавлении сообщения произошла ошибка');
+
 
             $this->redirect(['view', 'id' => $comment->document_id]);
 

@@ -20,7 +20,7 @@ class SettingsForm extends Model
     {
         return [
             [['req_file'], 'file', 'skipOnEmpty' => true,],
-            [['req_text'],'required']
+            [['req_text','working'],'required']
         ];
     }
 
@@ -41,7 +41,7 @@ class SettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'req_file' => 'Файл требований',
+            'req_file' => 'Загрузка нового файла требований',
             'req_text' => 'Текст требований',
             'working' => 'Сайт работает?'
         ];

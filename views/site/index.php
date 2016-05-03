@@ -13,7 +13,7 @@ $this->title = 'Документы';
                 ?><h1>Документы пользователей</h1>
                 <h3> Статистика последнего года:
                     <span class="label label-primary">Новых <?=$new_count?></span>
-                    <span class="label label-danger">Треб. испрв. <?=$warn_count?></span>
+                    <span class="label label-danger">Нуждается в исправлении <?=$warn_count?></span>
                     <span class="label label-success">Готовых <?=$ready_count?></span></h3>
                 <?if($documents == null){?>
                     <p>Пользователи не загрузили еще ни одного документа.</p>
@@ -73,7 +73,7 @@ $this->title = 'Документы';
                 ?>
             <?}
             else {?>
-             <h1>Ваши документы</h1>
+             <h1>Ваши документы</h1>  <a href="<?= \yii\helpers\Url::toRoute('documents/create')?>" class="btn btn-success">Добавить документ</a>
 
             <?
             if($documents == null){?>

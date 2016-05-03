@@ -6,7 +6,7 @@
 -->
 <html>
 <head>
-    <title>Spectral by HTML5 UP</title>
+    <title>Сайт для загрузки документов</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -20,24 +20,6 @@
 <!-- Page Wrapper -->
 <div id="page-wrapper">
 
-    <!-- Header -->
-    <header id="header" class="alt">
-        <h1><a href="index.html">Spectral</a></h1>
-        <!--<nav id="nav">-->
-        <!--<ul>-->
-        <!--<li class="special">-->
-        <!--<a href="#menu" class="menuToggle"><span>Меню</span></a>-->
-        <!--<div id="menu">-->
-        <!--<ul>-->
-        <!--<li><a href="index.html">Главная</a></li>-->
-        <!--<li><a href="generic.html">Мои документы</a></li>-->
-        <!--<li><a href="elements.html">Загрузить</a></li>-->
-        <!--</ul>-->
-        <!--</div>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</nav>-->
-    </header>
 
     <!-- Banner -->
     <section id="banner">
@@ -51,16 +33,6 @@
             </ul>
         </div>
     </section>
-
-
-
-    <!-- Footer -->
-    <footer id="footer">
-
-        <ul class="copyright">
-            <li>Ольферук А.</li><li>Серебрянский С.</li>
-        </ul>
-    </footer>
 
 </div>
 

@@ -1,71 +1,55 @@
 <?php
 
+use app\models\User;
 use yii\helpers\Html;
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
+use yii\grid\GridView;
+
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'User';
+$this->title = 'Пользователи';
 $this->params['breadcrumbs'][] = $this->title;
-$search = "$('.search-button').click(function(){
-	$('.search-form').toggle(1000);
-	return false;
-});";
-$this->registerJs($search);
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить нового', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-        <?php 
-    $gridColumn = [
-        ['class' => 'yii\grid\SerialColumn'],
-        ['attribute' => 'id', 'hidden' => true],
-        'username',
-        'course',
-        'group',
-        'email:email',
-        'created_at',
-        [
-            'class' => 'yii\grid\ActionColumn',
-        ],
-    ]; 
-    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'columns' => $gridColumn,
-        'pjax' => true,
-        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-user']],
-        'panel' => [
-            'type' => GridView::TYPE_PRIMARY,
-            'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
-        ],
-        // set a label for default menu
-        'export' => [
-            'label' => 'Page',
-            'fontAwesome' => true,
-        ],
-        // your toolbar can include the additional full export menu
-        'toolbar' => [
-            '{export}',
-            ExportMenu::widget([
-                'dataProvider' => $dataProvider,
-                'columns' => $gridColumn,
-                'target' => ExportMenu::TARGET_BLANK,
-                'fontAwesome' => true,
-                'dropdownOptions' => [
-                    'label' => 'Full',
-                    'class' => 'btn btn-default',
-                    'itemsBefore' => [
-                        '<li class="dropdown-header">Export All Data</li>',
-                    ],
-                ],
-            ]) ,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+//            'id',
+            'username',
+            'course',
+            'group',
+//            'auth_key',
+            // 'password_hash',
+            // 'password_reset_token',
+             'email:email',
+            [
+                'attribute' => 'role',
+                'format'=>'html',
+                'value' => function ($model) {
+                    switch ($model->role){
+                        case User::ROLE_ADMIN:
+                            return '<span class="label label-warning">Админ</span>';
+                        case User::ROLE_USER:
+                            return '<span class="label label-default">Студент</span>';
+                        default:
+                            return '<span class="label label-error">ERROR!!!</span>';
+                    }
+                }
+            ],
+
+            // 'status',
+             'created_at:datetime',
+            // 'updated_at',
+
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
 </div>

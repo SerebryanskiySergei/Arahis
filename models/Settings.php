@@ -25,5 +25,14 @@ class Settings extends BaseSettings
             [['name', 'value']]
         ]);
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Name',
+            'value' => 'Value',
+        ];
+    }
 	
 }

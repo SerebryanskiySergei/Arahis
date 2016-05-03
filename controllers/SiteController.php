@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\models\Documents;
+use app\models\News;
 use app\models\Settings;
 use app\models\SettingsForm;
 use app\models\User;
@@ -31,17 +32,25 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup','login','index','settings','news','delete-news'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup','login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout','index'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['settings','news','delete-news'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            return Yii::$app->user->identity->isAdmin;
+                        }
                     ],
                 ],
             ],
@@ -90,8 +99,7 @@ class SiteController extends Controller
                     array_push($years,$buf);
             }
             rsort($years,1);
-//            var_dump($years);exit;
-            $documents = Documents::find()->orderBy('status')->all();
+            $documents = Documents::find()->orderBy('updated_at desc')->all();
             $new_count =0; $warn_count =0; $ready_count =0;
             foreach ($documents as $doc){
                 if(Yii::$app->formatter->asDate($doc->updated_at, 'Y') == $years[0])
@@ -157,28 +165,7 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Спасибо что связались с нами.');
-            } else {
-                Yii::$app->session->setFlash('error', 'Ошибка при отправке сообщения.');
-            }
 
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
 
     /**
      * Displays about page.
@@ -293,6 +280,17 @@ class SiteController extends Controller
         }else{
             throw new NotFoundHttpException('Такого файла не существует ');
         }
+    }
+
+    public function actionNews(){
+        $news  = News::find()->orderBy('created_at desc')->all();
+        return $this->render('news',['news'=>$news]);
+    }
+    public function actionDeleteNew($id){
+        $new = News::findOne($id);
+        $new->delete();
+        $news  = News::find()->all();
+        return $this->render('news',['news'=>$news]);
     }
 
 }

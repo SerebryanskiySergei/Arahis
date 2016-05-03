@@ -15,8 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <div class="row">
-        <div class="col-lg-6 col-lg-3">
+        <div class="col-lg-6 col-lg-offset-3">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+
+                <?= $form->errorSummary($model); ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 

@@ -35,9 +35,9 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Мои документы', 'url' => ['/site/index']],
-        ['label' => 'Обратная связь', 'url' => ['/site/contact']],
     ];
     if(\app\models\User::isAdmin(Yii::$app->user->id)){
+        $menuItems[] = ['label' => 'Новости', 'url' => ['/site/news']];
         $menuItems[] = ['label' => 'Настройки сайта', 'url' => ['/site/settings']];
         $menuItems[] = ['label' => 'Пользователи', 'url' => ['/user/index']];
 

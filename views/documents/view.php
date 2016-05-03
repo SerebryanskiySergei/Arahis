@@ -18,6 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div id="main" class="clearfix">
 
+        <div class="col-lg-12" style="border-bottom: 1px solid grey; padding-bottom: 20px;">
+            <h1 > <?=$document->title?></h1>
+            <h3 style="color: dimgrey"><?=$document->user->username?></h3>
+        </div>
         <!--HISTORY-->
         <div class="col-md-5 history">
             <h1> История</h1>
@@ -48,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 </tbody>
             </table>
-            <a href="<?=\yii\helpers\Url::toRoute(['documents/upload','id'=>$document->id]);?>" class="btn btn-default">Загрузить новую версию</a>
+            <?if(\app\models\Settings::find()->where(['name'=>\app\models\Settings::WORK])->one()->value == 1){?><a href="<?=\yii\helpers\Url::toRoute(['documents/upload','id'=>$document->id]);?>" class="btn btn-primary">Загрузить новую версию</a><?}?>
             
 
 
@@ -112,6 +116,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <br>
 
             <!--ADD NEW COMMENT-->
+            <?if(\app\models\Settings::find()->where(['name'=>\app\models\Settings::WORK])->one()->value == 1){?>
             <form role="form" action="<?=\yii\helpers\Url::toRoute('documents/add-comment')?>" method="post">
                 <div class="form-group">
                     <label for="message">Новый комментарий:</label>
@@ -121,6 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <button class="btn btn-default" type="submit" >Отправить</button>
             </form>
+            <?}?>
 
         </div>
     </div>

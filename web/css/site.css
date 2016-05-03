@@ -102,3 +102,6 @@ a.desc:after {
     margin-top: 50px;
     margin-bottom: -50px;
 }
+.label{
+    margin-left: 10px;
+}
